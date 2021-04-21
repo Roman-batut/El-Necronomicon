@@ -232,18 +232,17 @@ class Moteur() :
     self.fenetre = pygame.display.set_mode((self.longueur, self.largeur))
     self.rendu = pygame.Surface((self.Rlongueur, self.Rlargeur))
 
-    self.Touche = False 
+    self.joueurTouche = False 
     self.change_hp = 10
     self.nombre_hp = 1
-    self.able_to_dash = True
 
     #On remplace le curseur par le viseur, on prépare le curseur pour les menus
     pygame.mouse.set_visible(False)
     self.cursor = pygame.image.load("Assets/Cursor.png").convert_alpha()
     self.menuCursor = pygame.image.load("Assets/CursorMenu.png").convert_alpha()
 
+    self.BarreVie = pygame.image.load("Assets/GUI/barrevie.png")
     self.BarrePouvoir = pygame.image.load("Assets/GUI/BarrePouvoir.png")
-    self.barrevie = pygame.image.load("Assets/GUI/barrevie.png")
     self.BarreCadre = pygame.image.load("Assets/GUI/BarreCadre(Petit).png")
     
     self.scene = Scene(self)
@@ -258,6 +257,9 @@ class Moteur() :
 
     self.collisions = []
 
+    #Dégats Joueur
+    self.nombreTouche = 0
+
   def Update(self) :
 
     #On commence par tout recouvrir d'un écran de couleur unie
@@ -270,42 +272,39 @@ class Moteur() :
     
     if not self.pause :
       self.rendu.blit(self.cursor, (pygame.mouse.get_pos()[0]//self.rapport - self.cursor.get_width()//2, pygame.mouse.get_pos()[1]//self.rapport - self.cursor.get_height()//2))
-    """
-    nombredefoisoutouche = 0
-    
     
     barrePouvoir = pygame.Surface(self.BarreCadre.get_rect().size)
-    barre = pygame.Surface(self.barrevie.get_size()) 
-    if self.Touche == True :
-      nombredefoisoutouche += 1 
-      
-      #pygame.draw.rect(self.fenetre,(0,0,0),pygame.Rect(self.fenetre.get_rect(), (self.barrevie.get_rect().x, self.barrevie.get_rect().y, pygame.Rect(self.fenetre.get_rect(self.barrevie).y , 32, nombredefoisoutouche*barre)))
+    barreVie = pygame.Surface(self.BarreVie.get_rect().size)
 
-      if self.nombredefoisoutouche == 5 :
-        Fonction.blur(fenetre)
-      #barre.blit(self.BarrePouvoir, (1,self.nombre_hp+self.change_hp))
-      #self.nombre_hp += self.change_hp
-      #barre.blit(self.BarreCadre, (0,0))
-      self.Touche = False
+    #Vie
+    if self.joueurTouche :
+      self.player.playerHp -= 1
+      barre.blit(self.BarrePouvoir, (1,self.nombre_hp+self.change_hp))
+      self.nombre_hp += self.change_hp
+      barre.blit(self.BarreCadre, (0,0))
+      self.joueurTouche = False
+      
+      if self.player.playerHp <= 0 : Fonctions.blur(self.fenetre)
 
     else :
       barrePouvoir.blit(self.BarrePouvoir, (1,self.nombre_hp))
       barrePouvoir.blit(self.BarreCadre, (0,0))
     self.rendu.blit(barrePouvoir, (self.Rlongueur - 15, 8))
+    
 
-    if self.able_to_dash : 
+    #Dash
+    if self.player.ableToDash : 
       icone = pygame.image.load("Assets/GUI/dash2.png")
-      #icone = pygame.transform.rotozoom(icone, 0,2 )
+      icone = pygame.transform.rotozoom(icone, 0,2 )
       self.rendu.blit(icone, (0, self.Rlargeur - 32))
     else : 
       icone2 = pygame.image.load("Assets/GUI/dashéteint.png")
       self.rendu.blit(icone2, (0, self.Rlargeur - 32))
     if self.nombre_hp > 81 :
       self.pause = True 
-    #mur = pygame.image.load("Assets/Tiles/MurEntier.png")
-    #self.rendu.blit(mur, (self.Rlongueur//2, self.Rlargeur//2))
 
-    """
+    
+
     #Le passage du rendu intérmédiare à la fenêtre finale
     surface = pygame.transform.scale(self.rendu, (self.longueur, self.largeur))
     self.fenetre.blit(surface, (0,0))
