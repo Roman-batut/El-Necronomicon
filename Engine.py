@@ -161,7 +161,7 @@ class Scene() :
 
     #On charge une salle à partir d'un fichier json fourni
     self.level = [[0] * 16 for i in range(12)]
-    niveau = Salles.ChargerSalle("niveauTest.json", self.moteur)
+    niveau = Salles.ChargerSalle("mainroom.json", self.moteur)
     self.levelSurf, walls = Salles.RenderSalle(niveau, self.moteur)
 
     #Contient l'information de là où on devra placer les murs

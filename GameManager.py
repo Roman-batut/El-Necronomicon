@@ -26,10 +26,10 @@ class Manager():
 
     self.Ennemies = []
 
-    for i in range(2):
+    for i in range(5):
       self.Ennemies.append(Enemy.Enemy("Zoubida", joueur, self.engine))
 
-    self.engine.scene.contenu.append(Trigger.Porte("Porte", self.engine, [0,0], [16,16]))
+    self.engine.scene.contenu.append(Trigger.Porte("Porte", self.engine, [0,64], [20,48]))
 
     #enemy = Enemy.Enemy("Zoubida", joueur, self.engine)
     #enemy2 = Enemy.Enemy("zoubida2leretour", joueur, self.engine)
@@ -47,7 +47,7 @@ class Manager():
       #  print("salle cleared")
 
       if self.transition:
-        pass
+        print("anursite")
 
 
 

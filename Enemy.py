@@ -5,6 +5,7 @@ import Bullet
 import Player
 import Fonctions
 import Matrix
+import random
 
 #Classe Ennemi
 class Enemy(Engine.Entity) :
@@ -12,8 +13,8 @@ class Enemy(Engine.Entity) :
     super().__init__(name, moteur, bounded = True)
 
     self.InitSprite("Assets/Enemies/" + str(name) + ".png")
-    self.InitRect([moteur.Rlongueur//3, moteur.Rlargeur//3], [17, 24])
-    self.pos = [moteur.Rlongueur//3, moteur.Rlargeur//3]
+    self.pos = [random.randint(16, moteur.Rlongueur - 16), random.randint(16, moteur.Rlargeur - 16)]
+    self.InitRect(self.pos, [17, 24])
     self.cible = cible
     self.bullets = []
     self.fireFrame = 0
